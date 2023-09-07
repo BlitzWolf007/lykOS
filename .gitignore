@@ -1,0 +1,13 @@
+/limine
+/ovmf
+
+*.iso
+*.hdd
+
+log.txt
+DISK.img
+
+*.o
+*.elf
+
+.vscode
