@@ -1,5 +1,4 @@
-#include <arch/x86_64.h>
-
+#include "idt.h"
 #include <def.h>
 
 #pragma region def
