@@ -51,8 +51,6 @@ struct idt_entry
     u32 rsv;
 } __attribute__((packed));
 
-void idt_create_entry(struct idt_entry *e, void (*handler)());
-
 struct idt_desc
 {
 	u16	limit;

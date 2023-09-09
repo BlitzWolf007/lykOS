@@ -3,6 +3,7 @@
 
 #include <debug.h>
 
+// Not static on purpose - see def.h
 volatile struct limine_hhdm_request HHDMRequest = {
     .id = LIMINE_HHDM_REQUEST,
     .revision = 0
