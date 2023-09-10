@@ -3,6 +3,9 @@
 #include <graphics/draw.h>
 #include <debug.h>
 
+#include <arch/x86_64/idt.h>
+#include <arch/x86_64/smp.h>
+
 #include <memory/pmm.h>
 #include <memory/vmm.h>
 
@@ -21,15 +24,14 @@ void _start()
 {
     draw_init();
 
+    idt_init();
+    
     pmm_init();
     vmm_init();
 
     sysdesc_init();
 
-    void *test = sysdesc_lookup("MCFG");
-    debug_log("Test: 0x%llx", (u64)test);
-    void *test1 = sysdesc_lookup("MADT");
-    debug_log("Test: 0x%llx", (u64)test1);
+    smp_init();
 
     debug_log("Are we still alive?");
 

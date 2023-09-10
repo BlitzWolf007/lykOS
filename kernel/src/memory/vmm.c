@@ -48,7 +48,6 @@ void vmm_init()
             for (u64 i = 0; i < pmm_segments[idx].len; i += PAGE_SIZE)
             {
                 vmm_map_page(&kernel_map, HIGHER_HALF + pmm_segments[idx].base + i, pmm_segments[idx].base + i, PTE_USER | PTE_WRITE | PTE_PRESENT);
-                vmm_map_page(&kernel_map, pmm_segments[idx].base + i, pmm_segments[idx].base + i, PTE_USER | PTE_WRITE | PTE_PRESENT); // Also indetity map.
             } 
         else if (pmm_segments[idx].type == LIMINE_MEMMAP_FRAMEBUFFER)
             for (u64 i = 0; i < pmm_segments[idx].len; i += PAGE_SIZE)

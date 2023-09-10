@@ -21,7 +21,7 @@ $(eval $(call DEFAULT_VAR,HOST_CC,$(DEFAULT_HOST_CC)))
 
 override DISK_IMG := DISK.IMG
 override QEMU_FLAGS_DISK := -drive id=disk,file=$(DISK_IMG),if=none -device ahci,id=ahci -device ide-hd,drive=disk,bus=ahci.0 
-override QEMU_FLAGS := -M q35 -m 1G -d int -M smm=off -D ./log.txt -no-shutdown -no-reboot -serial stdio -monitor stdio $(QEMU_FLAGS_DISK)
+override QEMU_FLAGS := -M q35 -m 1G -smp 4 -d int -M smm=off -D ./log.txt -no-shutdown -no-reboot -serial stdio -monitor stdio $(QEMU_FLAGS_DISK)
 
 .PHONY: all
 all: $(IMAGE_NAME).iso

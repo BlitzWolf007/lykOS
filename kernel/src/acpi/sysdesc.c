@@ -16,14 +16,14 @@ static struct xsdt *xsdt;
 
 void sysdesc_init()
 {
-    void *p = (struct rsdp*)rsdp_request.response->address;
+    void *p = rsdp_request.response->address;
 
     if (((struct rsdp*)p)->revision == 0)
     {
         sysdesc_ext = false;
         debug_log("RSDP addr: 0x%llx", p);
 
-        rsdt = (struct rsdt*)((struct rsdp*)p)->rsdt_addr;
+        rsdt = (struct rsdt*)(((struct rsdp*)p)->rsdt_addr + HIGHER_HALF);
         debug_log("RSDT addr: 0x%llx", rsdt);
     }        
     else 
@@ -31,7 +31,7 @@ void sysdesc_init()
         sysdesc_ext = true;
         debug_log("XSDP addr: 0x%llx", p);
 
-        xsdt = (struct xsdt *)((struct xsdp *)p)->xsdt_addr;
+        xsdt = (struct xsdt *)(((struct xsdp*)p)->xsdt_addr + HIGHER_HALF);
         debug_log("XSDT addr: 0x%llx", xsdt);
     }
 }
@@ -44,7 +44,7 @@ struct sdt_hdr* sysdesc_lookup(char *signature)
 
         for (u64 i = 0; i < entries; i++)
         {
-            struct sdt_hdr *hdr = (struct sdt_hdr*)rsdt->ptr_to_sdt[i];
+            struct sdt_hdr *hdr = (struct sdt_hdr*)(rsdt->ptr_to_sdt[i] + HIGHER_HALF);
             if (memcmp(hdr->signature, signature, 4) == 0)
                 return hdr;
         }
@@ -55,9 +55,11 @@ struct sdt_hdr* sysdesc_lookup(char *signature)
 
         for (u64 i = 0; i < entries; i++)
         {
-            struct sdt_hdr *hdr = (struct sdt_hdr*)xsdt->ptr_to_sdt[i];
+            struct sdt_hdr *hdr = (struct sdt_hdr*)(xsdt->ptr_to_sdt[i] + HIGHER_HALF);
             if (memcmp(hdr->signature, signature, 4) == 0)
                 return hdr;
         }
     }
+
+    return NULL;
 }
